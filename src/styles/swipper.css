@@ -1,0 +1,18 @@
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgba(255, 255, 255, 0.418) !important;
+  font-weight: bold !important;
+  margin-top: -55px;
+}
+
+.swiper-pagination-bullet-active-main {
+  background-color: #d9d9d9 !important;
+}
+.swiper-pagination-bullet {
+  padding: 7px !important;
+}
+
+.swiper-pagination-bullet-active-prev,
+.swiper-pagination-bullet-active-next {
+  background-color: rgb(255, 255, 255) !important;
+}

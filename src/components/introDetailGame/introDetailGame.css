@@ -1,0 +1,6 @@
+.introDetailGame .btn:hover {
+  transition: all 0.4s ease-in-out;
+  background-color: #fff !important;
+  color: #000 !important;
+  transform: scale(0.98);
+}
