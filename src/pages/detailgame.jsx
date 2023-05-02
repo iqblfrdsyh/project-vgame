@@ -27,7 +27,7 @@ const DetailGame = () => {
         `https://api.rawg.io/api/games/${id}?key=${apikey}`
       );
       setGameData(response.data);
-      // console.log(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -176,6 +176,10 @@ const DetailGame = () => {
                     );
                   })
                 }
+                recomended={gameData.ratings[0].percent + "%"}
+                meh={gameData.ratings[1].percent + "%"}
+                skip={gameData.ratings[2].percent + "%"}
+                exceptional={gameData.ratings[3].percent + "%"}
                 btnTrailerMovie={
                   movieData.length == 0 ? null : (
                     <button

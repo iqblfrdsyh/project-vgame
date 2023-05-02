@@ -17,7 +17,7 @@ const Home = () => {
       <NavigationBar />
       <div className="home">
         <HomeJumbotron />
-        <Container className="mt-5">
+        <Container className="mt-5" id="allgame">
           <h2 style={h2Style}>All Games</h2>
           <ListGame />
         </Container>

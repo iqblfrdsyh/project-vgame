@@ -25,6 +25,9 @@ const NavigationBar = () => {
           <Link to={"/"} className="nav-link">
             Home
           </Link>
+          <a href="#allgame" className="nav-link">
+            All Games
+          </a>
           <Link to={"/wishlist"} className="nav-link">
             Wishlist
           </Link>

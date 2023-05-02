@@ -56,7 +56,7 @@ const Footer = () => {
             Contact
           </a>
           <a href="" className="text-decoration-none text-white">
-            Supoort
+            Support
           </a>
         </div>
       </Container>

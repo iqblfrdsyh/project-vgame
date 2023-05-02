@@ -18,9 +18,22 @@ const ForgotPass = () => {
 
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    alert("success change password");
-    navigate("/login");
+  const handleConfirm = (e) => {
+    e.preventDefault();
+    const newPass = e.target.newPassword.value;
+    const repeatPass = e.target.repeatPass.value;
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    user.password = newPass;
+
+    if (newPass != repeatPass) {
+      alert("Password Tidak Sama");
+    } else {
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("Password updated successfully!");
+      navigate("/login");
+    }
   };
 
   return (
@@ -51,7 +64,11 @@ const ForgotPass = () => {
           </div>
         </Form>
 
-        <Form className="password-form" style={{ display: "none" }}>
+        <Form
+          className="password-form"
+          style={{ display: "none" }}
+          onSubmit={handleConfirm}
+        >
           <FloatingLabel
             controlId="floatingInput"
             label="New Password"
@@ -77,9 +94,7 @@ const ForgotPass = () => {
             />
           </FloatingLabel>
           <div className="d-flex justify-content-end mt-4">
-            <button className="btn btn-md btn-primary" onClick={handleConfirm}>
-              Confirm
-            </button>
+            <button className="btn btn-md btn-primary">Confirm</button>
           </div>
         </Form>
       </div>

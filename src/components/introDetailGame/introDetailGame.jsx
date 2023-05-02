@@ -69,6 +69,12 @@ const IntroDetailGame = (props) => {
           <span className="me-3">Website :</span>
           {props.website}
         </div>
+        <div className="ratings" style={{ width: "400px" }}>
+          <p>
+            {props.recomended} Recomended | {props.meh} Meh | {props.skip} Skip
+            | {props.exceptional} Exceptional
+          </p>
+        </div>
         <div className="mt-4">
           {isFavorite ? (
             ""
