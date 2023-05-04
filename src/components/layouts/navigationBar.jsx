@@ -28,6 +28,9 @@ const NavigationBar = () => {
           <a href="#allgame" className="nav-link">
             All Games
           </a>
+          <Link to="/released" className="nav-link">
+            New Games
+          </Link>
           <Link to={"/wishlist"} className="nav-link">
             Wishlist
           </Link>

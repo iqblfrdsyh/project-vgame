@@ -10,6 +10,7 @@ import TrailersGame from "../components/trailersGame/trailersGame";
 import Loading from "../components/loadingAnimation/loading";
 import ModalSuccess from "../components/modal/modal";
 import ModalMovie from "../components/modal/modalMovie";
+import Requirements from "../components/requirements/requirements";
 
 const DetailGame = () => {
   const [gameData, setGameData] = useState({});
@@ -96,8 +97,8 @@ const DetailGame = () => {
     backgroundImage: `url(${playIcon})`,
     backgroundSize: "27px",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "4px center",
-    paddingLeft: "35px",
+    backgroundPosition: "5px center",
+    paddingLeft: "40px",
     border: "2px solid #fff",
   };
 
@@ -227,6 +228,7 @@ const DetailGame = () => {
                   dangerouslySetInnerHTML={{ __html: gameData.description }}
                 ></div>
               </div>
+              <Requirements />
               <TrailersGame />
             </Container>
           </div>

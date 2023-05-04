@@ -55,7 +55,6 @@ const ListGame = () => {
 
   const debounceSeacrh = debounce(handleInputChange, 800);
 
-  const [isFavorite, setIsFavorite] = useState(false);
   const [wishlist, setWishlist] = useState([]);
 
   const handleAddToWishlist = (game) => {
