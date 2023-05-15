@@ -13,11 +13,14 @@ const ListGame = () => {
   const [search, setSearch] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Update initial value to false
+  const [gameNotFound, setGameNotFound] = useState(false);
 
   const apikey = "51a2aa2785884f64a58ef1dbd153b504";
 
   const fetchAPI = async () => {
     try {
+      setIsLoading(true); // Set loading state to true
       const response = await axios.get(
         `https://api.rawg.io/api/games?key=${apikey}&page=${page}&search=${search}`
       );
@@ -26,10 +29,11 @@ const ListGame = () => {
         .sort((a, b) => a.rating - b.rating)
         .reverse();
       setDataGame((prevData) => prevData.concat(sortDataGame));
-      console.log(newDataGame);
-      console.log(newDataGame);
+      setIsLoading(false); // Set loading state to false
     } catch (error) {
       console.log(error);
+      setIsLoading(false); // Set loading state to false
+      setGameNotFound(true);
     }
   };
 
@@ -53,7 +57,7 @@ const ListGame = () => {
     setDataLoaded(false);
   };
 
-  const debounceSeacrh = debounce(handleInputChange, 800);
+  const debounceSearch = debounce(handleInputChange, 800);
 
   const [wishlist, setWishlist] = useState([]);
 
@@ -61,7 +65,7 @@ const ListGame = () => {
     const storedData = localStorage.getItem("wishlist");
     const existingWishlist = storedData ? JSON.parse(storedData) : [];
 
-    // Cek data jika sudah ada di storage
+    // Check if game already exists in storage
     const isGameExist = existingWishlist.some((item) => item.id === game.id);
     if (isGameExist) {
       localStorage.removeItem(`wishlist-${game.id}`);
@@ -95,7 +99,7 @@ const ListGame = () => {
     <>
       <SearchBar
         className="searchBar d-flex justify-content-end mb-5"
-        onChange={debounceSeacrh}
+        onChange={debounceSearch}
       />
       <ModalSuccess
         onclick={() => setShowModal(false)}
@@ -103,84 +107,94 @@ const ListGame = () => {
         title="Successfully Added To Wishlist"
         contentBody={`Check in your wishlist menu to view`}
       />
-      {dataGame.length === 0 ? (
-        <>
-          <Loading />
-        </>
+      {isLoading ? (
+        <Loading />
       ) : (
-        <div className="listGame d-flex flex-wrap justify-content-between align-items-center">
-          {dataGame &&
-            dataGame.map((games, index) => {
-              const isFavorite =
-                localStorage.getItem(`wishlist-${games.id}`) === "true";
-              return (
-                <div className="mb-3" key={index.id}>
-                  <CardGame
-                    game={games.name}
-                    image={
-                      games.background_image === null
-                        ? "/assets/background/ImageNotFound.svg"
-                        : `${games.background_image}?q=15&width=300`
-                    }
-                    alt={games.name}
-                    rating={!games.metacritic ? "0" : games.metacritic}
-                    genre={games.genres.map((genre) => genre.name).join(", ")}
-                    toDetail={!userData ? "/login" : `/detail/${games.id}`}
-                    onclickWishlist={
-                      !userData
-                        ? () => navigate("/login")
-                        : () => handleAddToWishlist(games)
-                    }
-                    srcWishlist={
-                      isFavorite
-                        ? "/assets/icon/doneAddFav.svg"
-                        : "/assets/icon/addFav.svg"
-                    }
-                    platforms={
-                      !games.parent_platforms
-                        ? null
-                        : games.parent_platforms.map((games, index) => {
-                            const platformSlug = games.platform.slug;
-                            const platformIcon = `/assets/platforms/blackColor/${platformSlug}.svg`;
+        <>
+          {dataGame.length === 0 && search !== "" && !gameNotFound && (
+            <div style={{ marginTop: "100px", marginBottom: "100px" }}>
+              <p className="text-center fw-semibold fs-5">
+                No games found for the search query.
+              </p>
+            </div>
+          )}
+          {dataGame.length > 0 && (
+            <div className="listGame d-flex flex-wrap justify-content-between align-items-center">
+              {dataGame.map((games, index) => {
+                const isFavorite =
+                  localStorage.getItem(`wishlist-${games.id}`) === "true";
+                return (
+                  <div className="mb-3" key={index.id}>
+                    <CardGame
+                      game={games.name}
+                      image={
+                        games.background_image === null
+                          ? "/assets/background/ImageNotFound.svg"
+                          : `${games.background_image}?q=15&width=300`
+                      }
+                      alt={games.name}
+                      rating={!games.metacritic ? "0" : games.metacritic}
+                      genre={games.genres.map((genre) => genre.name).join(", ")}
+                      toDetail={!userData ? "/login" : `/detail/${games.id}`}
+                      onclickWishlist={
+                        !userData
+                          ? () => navigate("/login")
+                          : () => handleAddToWishlist(games)
+                      }
+                      srcWishlist={
+                        isFavorite
+                          ? "/assets/icon/doneAddFav.svg"
+                          : "/assets/icon/addFav.svg"
+                      }
+                      platforms={
+                        !games.parent_platforms
+                          ? null
+                          : games.parent_platforms.map((games, index) => {
+                              const platformSlug = games.platform.slug;
+                              const platformIcon = `/assets/platforms/blackColor/${platformSlug}.svg`;
 
-                            if (index <= 3) {
-                              return (
-                                <img
-                                  key={index}
-                                  src={platformIcon}
-                                  width="20px"
-                                  className="me-2"
-                                />
-                              );
-                            } else if (index === 4) {
-                              return (
-                                <span
-                                  key={index}
-                                  className="badge bg-secondary fw-semibold d-flex align-items-center"
-                                >
-                                  ++
-                                </span>
-                              );
-                            } else {
-                              return null;
-                            }
-                          })
-                    }
-                  />
-                </div>
-              );
-            })}
-        </div>
+                              if (index <= 3) {
+                                return (
+                                  <img
+                                    key={index}
+                                    src={platformIcon}
+                                    width="20px"
+                                    className="me-2"
+                                  />
+                                );
+                              } else if (index === 4) {
+                                return (
+                                  <span
+                                    key={index}
+                                    className="badge bg-secondary fw-semibold d-flex align-items-center"
+                                  >
+                                    ++
+                                  </span>
+                                );
+                              } else {
+                                return null;
+                              }
+                            })
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {dataGame.length > 0 && !gameNotFound && (
+            <div className="loadMore mt-5 pt-2 d-flex justify-content-center">
+              <p
+                onClick={handleLoadMore}
+                style={styleP}
+                className="px-2 py-1 rounded"
+              >
+                Load More
+              </p>
+            </div>
+          )}
+        </>
       )}
-      <div className="loadMore mt-5 pt-2 d-flex justify-content-center">
-        <p
-          onClick={handleLoadMore}
-          style={styleP}
-          className="px-2 py-1 rounded"
-        >
-          Load More
-        </p>
-      </div>
     </>
   );
 };

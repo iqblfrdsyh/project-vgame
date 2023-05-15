@@ -177,10 +177,26 @@ const DetailGame = () => {
                     );
                   })
                 }
-                recomended={gameData.ratings[0].percent + "%"}
-                meh={gameData.ratings[1].percent + "%"}
-                skip={gameData.ratings[2].percent + "%"}
-                exceptional={gameData.ratings[3].percent + "%"}
+                recomended={
+                  gameData.ratings[0].percent
+                    ? gameData.ratings[0].percent + "%"
+                    : "null"
+                }
+                meh={
+                  gameData.ratings[1].percent
+                    ? gameData.ratings[1].percent + "%"
+                    : "null"
+                }
+                skip={
+                  gameData.ratings[2].percent
+                    ? gameData.ratings[2].percent + "%"
+                    : "null"
+                }
+                exceptional={
+                  gameData.ratings[3].percent
+                    ? gameData.ratings[3].percent + "%"
+                    : "null"
+                }
                 btnTrailerMovie={
                   movieData.length == 0 ? null : (
                     <button
